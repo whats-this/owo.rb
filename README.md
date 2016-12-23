@@ -14,12 +14,11 @@ IT BE ROOBY WRAPR
 IF U WANTS 2 USE IT
 DO SOMETHIN LIEK
 ```
-client = OwO::API.new
-res = client.upload_local 'UR PATH'
+client = OwO::API.new 'UR TOKN'
+res = client.upload_local ['UR PATHZ', 'MOAR PATHZ!!']
 ```
 ### 2 DO LIST
 
-* MAK TOKN SUPORT (i haz no tokenz yet but prob werkz)
 * MAK RAEK FILE
 * MAK GEM FILE
 * MAK REMOOT UPLOD
