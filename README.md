@@ -3,25 +3,33 @@
      | |  | |_      _| |  | |
      | |  | \ \ /\ / / |  | |
      | |__| |\ V  V /| |__| |
-      \____/  \_/\_/  \____/
+      \____/  \_/\_/  \____/   .rb
 
-
-
-# whATS THis?@@
+# OwO.rb ( whATS THis?@@ )
 
 IT BE ROOBY WRAPR
 
-IF U WANTS 2 USE IT
-DO SOMETHIN LIEK
+# DA EXAMPLES
+
 ```
 client = OwO::API.new 'UR TOKN'
 res = client.upload_local ['UR PATHZ', 'MOAR PATHZ!!']
 ```
-### 2 DO LIST
+
+# TODO
 
 * MAK RAEK FILE
 * MAK GEM FILE
 * MAK REMOOT UPLOD
 * MAK LINKZ SHORT
 
-### KTHXBAI
+# CONTERBUTES
+
+1. FURK THINGO.
+2. EDERP CORD.
+3. MAK PR.
+4. SURBMIT PR.
+
+# LICENZES
+
+DA LICENZES CAN B FOUND IN `LICENSE.md`.
