@@ -19,5 +19,5 @@ res = client.upload_local './example.png'
 # Can also be in the form of an array.
 res = client.upload_local ['./example.png']
 
-# Start res
+# Displays the output in the console.
 puts res
