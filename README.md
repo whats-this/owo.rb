@@ -16,7 +16,7 @@ client = OwO::API.new 'UR TOKN'
 res = client.upload_local ['UR PATHZ', 'MOAR PATHZ!!']
 ```
 
-# TODO
+# 2DO
 
 * MAK RAEK FILE
 * MAK GEM FILE
