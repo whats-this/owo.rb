@@ -1,9 +1,26 @@
-# owo.rb
-Ruby API wrapper. Authors: @TriggerRimfire
+[![Gem Version](https://img.shields.io/gem/v/owo.svg)]()
+[![Gem Downloads](https://img.shields.io/gem/dt/owo.svg)]() [![Travis](https://img.shields.io/travis/SnazzyPine25/passlock/master.svg)]()
+[![Inline docs](http://inch-ci.org/github/SnazzyPine25/passlock.svg?branch=master&style=shields)](http://inch-ci.org/github/SnazzyPine25/passlock)
+# ![OwO]().rb
+A wrapper gem for the OwO API.
 
-... I'll fix this later. 200% better.
-I promise.
-We have the best promises.
-Better than bluebird and q.
-It's true.
-Terrific.
+## Dependencies
+* [rest-client](https://github.com/rest-client/rest-client)
+
+## Examples
+```ruby
+require 'owo'
+owo = OwO::WhatsThis.new('TOKEN', upload_url: "owo.whats-th.is", shorten_url: "uwu.whats-th.is")
+```
+Shortening URLs
+```ruby
+owo.shorten("https://whats-th.is") # "http://uwu.whats-th.is/d263a4"
+owo.shorten(["https://google.com", "https://youtube.com"]) # ["http://uwu.whats-th.is/13xd1", "http://uwu.whats-th.is/cqwec"]
+```
+Uploading Files
+```ruby
+# Due note that when not using the absolute path, the path set will be where the process started, NOT where the ruby gem path.
+owo.upload("./test/example.png") # "https://owo.whats-th.is/4463fc.png"
+owo.upload(File.new(File.apsolute_path("./test/example.png"))) # "https://owo.whats-th.is/aa1nsa.png"
+owo.upload([File.new(File.apsolute_path("./test/example2.png")), "./test/example2.png"]) # ["http://owo.whats-th.is/n1nsua.png", "http://owo.whats-th.is/nd91ka.png"]
+```
