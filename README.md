@@ -1,6 +1,6 @@
 [![Gem Version](https://img.shields.io/gem/v/owo.svg)]()
-[![Gem Downloads](https://img.shields.io/gem/dt/owo.svg)]() [![Travis](https://img.shields.io/travis/SnazzyPine25/passlock/master.svg)]()
-[![Inline docs](http://inch-ci.org/github/SnazzyPine25/passlock.svg?branch=master&style=shields)](http://inch-ci.org/github/SnazzyPine25/passlock)
+[![Gem Downloads](https://img.shields.io/gem/dt/owo.svg)]() [![Travis](https://img.shields.io/travis/SnazzyPine25/owo.rb/master.svg)]()
+[![Inline docs](http://inch-ci.org/github/SnazzyPine25/owo.rb.svg?branch=master&style=shields)](http://inch-ci.org/github/SnazzyPine25/owo.rb)
 # ![OwO]().rb
 A wrapper gem for the OwO API.
 
