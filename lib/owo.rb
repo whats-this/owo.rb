@@ -15,25 +15,24 @@ module OwO
       # The domain to use when returning shortener URLs
       attr_accessor :shorten_url
 
-      def initialize(token, upload_url: "owo.whats-th.is", shorten_url: "uwu.whats-th.is")
+      def initialize(token, upload_url: 'owo.whats-th.is', shorten_url: 'uwu.whats-th.is')
         @token = token
         @upload_url = upload_url
         @shorten_url = shorten_url
       end
 
-      def opts()
-        {'t' => @token, 'u' => @upload_url, 's' => @shorten_url}
+      def opts
+        { 't' => @token, 'u' => @upload_url, 's' => @shorten_url }
       end
 
       # Upload a single file or multiple files to OwO.
       # @param files [File, String, Array<File, String>] Files to upload, can be either String or File
       # @return [String, Array<String>] Returns the URLs of the uploaded files
       def upload(files)
-        if not files.length == 0
-          was_string = false
+        ogfiles = files
+        if not files.empty?
           if files.is_a?(String)
-            files = [ files ]
-            was_string = true
+            files = [files]
           end
           files = files.map do |x|
             if x.is_a?(String)
@@ -42,17 +41,15 @@ module OwO
               x
             end
           end
-          result = OwO::API.upload(opts(), files)
+          result = OwO::API.upload(opts, files)
           result.shift
-          result = result["files"].map.with_index do |x, i|
+          result = result['files'].map do |x|
             "https://#{@upload_url}/#{x['url']}"
           end
-          if not files.is_a?(Array)
-            result = result[0]
-          end
-          return result
+          result = result[0] unless ogfiles.is_a?(Array)
+          result
         else
-          raise OwO::Err::NoContent, "Theres no files provided!"
+          raise OwO::Err::NoContent, 'Theres no files provided!'
         end
       end
 
@@ -62,12 +59,12 @@ module OwO
       def shorten(urls)
         if not urls.length == 0
           if urls.is_a?(Array)
-            return urls.map { |x| OwO::API.shorten(opts(), x) }
+            urls.map { |x| OwO::API.shorten(opts(), x) }
           else
-            return OwO::API.shorten(opts(), urls)
+            OwO::API.shorten(opts, urls)
           end
         else
-          raise OwO::Err::NoContent, "Theres no URL provided!"
+          raise OwO::Err::NoContent, 'Theres no URL provided!'
         end
       end
   end

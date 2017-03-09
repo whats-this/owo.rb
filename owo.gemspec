@@ -1,12 +1,16 @@
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'owo/ver'
+
 Gem::Specification.new do |gem|
   gem.name          = 'owo'
-  gem.version       = '1.1.1'
+  gem.version       = OwO::VERSION
   gem.date          = '2016-03-08'
   gem.authors       = ['Snazzah']
   gem.email         = 'suggesttosnazzy@gmail.com'
-  gem.summary       = %q{A gem that utilizes the OwO API.}
-  gem.description   = %q{A gem that utilizes the OwO API.}
-  gem.files         = ["lib/owo.rb","lib/owo/err.rb","lib/owo/api.rb"]
+  gem.summary       = 'A gem that utilizes the OwO API.'
+  gem.description   = 'A gem that utilizes the OwO API.'
+  gem.files         = ['lib/owo.rb', "lib/owo/err.rb", 'lib/owo/api.rb']
   gem.homepage      = 'https://github.com/whats-this/owo.rb'
   gem.license       = 'MIT'
 
