@@ -57,5 +57,13 @@ module OwO
         'Unhandled'
       end
     end
+
+    # Raised when loading a file recieves an error
+    class FileError < RuntimeError
+      # Default message for this exception
+      def message
+        'Unknown'
+      end
+    end
   end
 end

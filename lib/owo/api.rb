@@ -6,14 +6,14 @@ require 'rest-client'
 module OwO
   # List of methods representing endpoints in OwO's API
   module API
-    UPLOAD_URL = "https://api.awau.moe/upload/pomf"
-    SHORTEN_URL = "https://api.awau.moe/shorten/polr"
+    UPLOAD_URL = 'https://api.awau.moe/upload/pomf'.freeze
+    SHORTEN_URL = 'https://api.awau.moe/shorten/polr'.freeze
 
     module_function
 
     def request(type, *attributes)
       raw = RestClient.send(type, *attributes, :'User-Agent' => "OwO.rb v#{OwO::VERSION} (https://github.com/whats-this/owo.rb)")
-      json = parse_json(raw);
+      json = parse_json(raw)
       return json
     rescue RestClient::RequestEntityTooLarge
       raise OwO::Err::TooLarge, 'Requested files are too large!'
@@ -51,11 +51,10 @@ module OwO
     end
 
     def upload(opts, files)
-      # "https://#{opts['u']}/" + 
       request(
         :post,
         "#{UPLOAD_URL}?key=#{opts['t']}",
-        "files".to_sym() => files
+        'files'.to_sym => files
       )
     end
 

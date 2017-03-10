@@ -30,13 +30,26 @@ module OwO
       # @return [String, Array<String>] Returns the URLs of the uploaded files
       def upload(files)
         ogfiles = files
-        if not files.empty?
+        if !files.empty?
           if files.is_a?(String)
             files = [files]
           end
           files = files.map do |x|
             if x.is_a?(String)
-              File.new(File.absolute_path(x), 'rb')
+              begin
+                File.new(File.absolute_path(x), 'rb')
+              rescue Errno::ENOENT, Errno::EACCES, Errno::ENAMETOOLONG => e
+                errstring = 'Unknown';
+                case e.class.name
+                  when 'Errno::ENOENT'
+                    errstring = 'File Not Found'
+                  when 'Errno::EACCES'
+                    errstring = 'Permission Denied'
+                  when 'Errno::ENAMETOOLONG'
+                    errstring = 'Name Too Long'
+                end
+                raise OwO::Err::FileError, "#{errstring} | #{e.class.name}"
+              end
             else
               x
             end
@@ -57,9 +70,9 @@ module OwO
       # @param urls [String, Array<String>] URLs to sharten
       # @return [String, Array<String>] Returns the URLs of the shortened URLs
       def shorten(urls)
-        if not urls.length == 0
+        if !urls.empty?
           if urls.is_a?(Array)
-            urls.map { |x| OwO::API.shorten(opts(), x) }
+            urls.map { |x| OwO::API.shorten(opts, x) }
           else
             OwO::API.shorten(opts, urls)
           end
