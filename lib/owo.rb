@@ -57,7 +57,7 @@ module OwO
     end
 
     # Shortens a link with OwO.
-    # @param urls [String, Array<String>] URLs to sharten
+    # @param urls [String, Array<String>] URLs to shorten
     # @return [String, Array<String>] Returns the URLs of the shortened URLs
     def shorten(urls)
       raise OwO::Err::NoContent, 'Theres no URL provided!' if urls.empty?
