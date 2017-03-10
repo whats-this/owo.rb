@@ -1,7 +1,6 @@
 module OwO
   # Custom errors raised in various places
   module Err
-
     # Raised when a token is invalid or incorrect.
     class BadToken < RuntimeError
       # Default message for this exception

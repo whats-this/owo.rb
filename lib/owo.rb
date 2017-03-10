@@ -30,32 +30,30 @@ module OwO
     # @return [String, Array<String>] Returns the URLs of the uploaded files
     def upload(files)
       ogfiles = files
-      files = [files] if !files.empty? && files.is_a?(String)
+      raise OwO::Err::NoContent, 'Theres no files provided!' if files.empty?
+      files = [files] if files.is_a?(String)
       files = files.map do |x|
-          return x if !x.is_a?(String)
-          begin
-            File.new(File.absolute_path(x), 'rb')
-          rescue Errno::ENOENT, Errno::EACCES, Errno::ENAMETOOLONG => e
-            errstring = 'Unknown'
-            case e.class.name
-            when 'Errno::ENOENT'
-              errstring = 'File Not Found'
-            when 'Errno::EACCES'
-              errstring = 'Permission Denied'
-            when 'Errno::ENAMETOOLONG'
-              errstring = 'Name Too Long'
-            end
-            raise OwO::Err::FileError, "#{errstring} | #{e.class.name}"
+        return x if !x.is_a?(String)
+        begin
+          File.new(File.absolute_path(x), 'rb')
+        rescue Errno::ENOENT, Errno::EACCES, Errno::ENAMETOOLONG => e
+          errstring = 'Unknown'
+          case e.class.name
+          when 'Errno::ENOENT'
+            errstring = 'File Not Found'
+          when 'Errno::EACCES'
+            errstring = 'Permission Denied'
+          when 'Errno::ENAMETOOLONG'
+            errstring = 'Name Too Long'
           end
+          raise OwO::Err::FileError, "#{errstring} | #{e.class.name}"
         end
-        result = OwO::API.upload(opts, files)
-        result.shift
-        result = result['files'].map { |x| "https://#{@upload_url}/#{x['url']}" }
-        result = result[0] unless ogfiles.is_a?(Array)
-        result
-      else
-        raise OwO::Err::NoContent, 'Theres no files provided!'
       end
+      result = OwO::API.upload(opts, files)
+      result.shift
+      result = result['files'].map { |x| "https://#{@upload_url}/#{x['url']}" }
+      result = result[0] unless ogfiles.is_a?(Array)
+      result
     end
 
     # Shortens a link with OwO.
