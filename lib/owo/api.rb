@@ -66,5 +66,3 @@ module OwO
     end
   end
 end
-
-# gem build owo.gemspec && gem install owo-1.0.0.gem && ruby test/upload.rb
