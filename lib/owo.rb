@@ -30,35 +30,27 @@ module OwO
     # @return [String, Array<String>] Returns the URLs of the uploaded files
     def upload(files)
       ogfiles = files
-      if !files.empty?
-        if files.is_a?(String)
-          files = [files]
-        end
-        files = files.map do |x|
-          if x.is_a?(String)
-            begin
-              File.new(File.absolute_path(x), 'rb')
-            rescue Errno::ENOENT, Errno::EACCES, Errno::ENAMETOOLONG => e
-              errstring = 'Unknown'
-              case e.class.name
-              when 'Errno::ENOENT'
-                errstring = 'File Not Found'
-              when 'Errno::EACCES'
-                errstring = 'Permission Denied'
-              when 'Errno::ENAMETOOLONG'
-                errstring = 'Name Too Long'
-              end
-              raise OwO::Err::FileError, "#{errstring} | #{e.class.name}"
+      files = [files] if !files.empty? && files.is_a?(String)
+      files = files.map do |x|
+          return x if !x.is_a?(String)
+          begin
+            File.new(File.absolute_path(x), 'rb')
+          rescue Errno::ENOENT, Errno::EACCES, Errno::ENAMETOOLONG => e
+            errstring = 'Unknown'
+            case e.class.name
+            when 'Errno::ENOENT'
+              errstring = 'File Not Found'
+            when 'Errno::EACCES'
+              errstring = 'Permission Denied'
+            when 'Errno::ENAMETOOLONG'
+              errstring = 'Name Too Long'
             end
-          else
-            x
+            raise OwO::Err::FileError, "#{errstring} | #{e.class.name}"
           end
         end
         result = OwO::API.upload(opts, files)
         result.shift
-        result = result['files'].map do |x|
-          "https://#{@upload_url}/#{x['url']}"
-        end
+        result = result['files'].map { |x| "https://#{@upload_url}/#{x['url']}" }
         result = result[0] unless ogfiles.is_a?(Array)
         result
       else
@@ -70,14 +62,11 @@ module OwO
     # @param urls [String, Array<String>] URLs to sharten
     # @return [String, Array<String>] Returns the URLs of the shortened URLs
     def shorten(urls)
-      if !urls.empty?
-        if urls.is_a?(Array)
-          urls.map { |x| OwO::API.shorten(opts, x) }
-        else
-          OwO::API.shorten(opts, urls)
-        end
+      raise OwO::Err::NoContent, 'Theres no URL provided!' if urls.empty?
+      if urls.is_a?(Array)
+        urls.map { |x| OwO::API.shorten(opts, x) }
       else
-        raise OwO::Err::NoContent, 'Theres no URL provided!'
+        OwO::API.shorten(opts, urls)
       end
     end
   end
