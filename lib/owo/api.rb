@@ -22,21 +22,13 @@ module OwO
     rescue RestClient::BadRequest => e
       raw = e.response
       json = parse_json(raw)
-      if json.is_a?(Hash)
-        if json['description'] == 'too many files'
-          raise OwO::Err::TooManyFiles, 'You requested too many files!'
-        end
-      else
-        if raw == 'invalid URL'
-          raise OwO::Err::BadURL, 'Your URL is invalid!'
-        end
-      end
+      raise OwO::Err::TooManyFiles, 'You requested too many files!' if json.is_a?(Hash) && json['description'] == 'too many files'
+      raise OwO::Err::BadURL, 'Your URL is invalid!' if !json.is_a?(Hash) && raw == 'invalid URL'
       err = if json.is_a?(Hash)
               json['description']
             else
               raw
             end
-
       raise err
     rescue RestClient::InternalServerError
       raise OwO::Err::ServerFail, 'Server Error!'

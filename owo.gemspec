@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = 'suggesttosnazzy@gmail.com'
   gem.summary       = 'A gem that utilizes the OwO API.'
   gem.description   = 'A gem that utilizes the OwO API.'
-  gem.files         = ['lib/owo.rb', 'lib/owo/err.rb', 'lib/owo/api.rb']
+  gem.files         = ['lib/owo.rb', 'lib/owo/err.rb', 'lib/owo/api.rb', 'lib/owo/ver.rb']
   gem.homepage      = 'https://github.com/whats-this/owo.rb'
   gem.license       = 'MIT'
 
