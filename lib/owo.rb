@@ -33,7 +33,7 @@ module OwO
       raise OwO::Err::NoContent, 'Theres no files provided!' if files.empty?
       files = [files] if files.is_a?(String)
       files = files.map do |x|
-        return x if !x.is_a?(String)
+        return x unless x.is_a?(String)
         begin
           File.new(File.absolute_path(x), 'rb')
         rescue Errno::ENOENT, Errno::EACCES, Errno::ENAMETOOLONG => e
