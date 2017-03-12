@@ -1,0 +1,46 @@
+# Disable all metrics.
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockNesting:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+# Prefer compact module/class defs
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# Allow CamelCase constants as well as SCREAMING_SNAKE_CASE
+Style/ConstantName:
+  Enabled: false
+
+# Allow 'Pokémon-style' exception handling
+Lint/RescueException:
+  Enabled: false
+
+AllCops:
+  TargetRubyVersion: 2.1
+
+# http://stackoverflow.com/questions/4763121/should-i-use-alias-or-alias-method
+Style/Alias:
+  Enabled: false
