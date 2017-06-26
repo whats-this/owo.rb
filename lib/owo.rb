@@ -6,34 +6,38 @@ require 'rest-client'
 module OwO
   # The main module for interaction
   class WhatsThis
-    # The token to the module
+    # @return [String] the token used for OwO.
     attr_accessor :token
 
-    # The domain to use when returning upload URLs
-    attr_accessor :upload_url
+    # @return [String] the domain to use when returning URLs.
+    attr_accessor :url
 
-    # The domain to use when returning shortener URLs
-    attr_accessor :shorten_url
+    # @return [String] the url being used to use the OwO API.
+    attr_accessor :api_url
 
-    def initialize(token, upload_url: 'owo.whats-th.is', shorten_url: 'uwu.whats-th.is')
+    # Create a class to upload files and shorten URLs with OWO.
+    # @param token [String] the token required to use OwO.
+    # @param url [String] the domain to use when returning URLs.
+    # @param api_url [String] the url to use when using the OwO API. (This requires https:// or http://)
+    def initialize(token, url: 'owo.whats-th.is', api_url: 'https://api.awau.moe')
       @token = token
-      @upload_url = upload_url
-      @shorten_url = shorten_url
-    end
+      @url = url
+      @api_url = api_url
 
-    def opts
-      { 't' => @token, 'u' => @upload_url, 's' => @shorten_url }
+      raise OwO::Err::BadToken, 'Token is empty!' if token.empty?
+      raise OwO::Err::BadToken, 'Input your OwO token to test the client.' if token == 'TOKEN'
     end
 
     # Upload a single file or multiple files to OwO.
     # @param files [File, String, Array<File, String>] Files to upload, can be either String or File
     # @return [String, Array<String>] Returns the URLs of the uploaded files
-    def upload(files)
+    def upload(*files)
       ogfiles = files
+      files = files.flatten
+      raise OwO::Err::NoContent, 'There is a empty string in your arguments!' if files.include? ''
       raise OwO::Err::NoContent, 'Theres no files provided!' if files.empty?
-      files = [files] if files.is_a?(String)
       files = files.map do |x|
-        return x unless x.is_a?(String)
+        return x if x.respond_to? :read
         begin
           File.new(File.absolute_path(x), 'rb')
         rescue Errno::ENOENT, Errno::EACCES, Errno::ENAMETOOLONG => e
@@ -46,26 +50,31 @@ module OwO
           when 'Errno::ENAMETOOLONG'
             errstring = 'Name Too Long'
           end
-          raise OwO::Err::FileError, "#{errstring} | #{e.class.name}"
+          raise OwO::Err::FileError, "Error initializing file '${x}' | #{errstring} | #{e.class.name}"
         end
       end
-      result = OwO::API.upload(opts, files)
-      result.shift
-      result = result['files'].map { |x| "https://#{@upload_url}/#{x['url']}" }
-      result = result[0] unless ogfiles.is_a?(Array)
-      result
+      result = OwO::API.upload(opts, files)['files'].map { |x| "https://#{@url}/#{x['url']}" }
+      result[0] if ogfiles.length == 1 || !ogfiles.first.is_a?(Array)
     end
 
     # Shortens a link with OwO.
     # @param urls [String, Array<String>] URLs to shorten
     # @return [String, Array<String>] Returns the URLs of the shortened URLs
-    def shorten(urls)
-      raise OwO::Err::NoContent, 'Theres no URL provided!' if urls.empty?
-      if urls.is_a?(Array)
-        urls.map { |x| OwO::API.shorten(opts, x) }
-      else
-        OwO::API.shorten(opts, urls)
-      end
+    def shorten(*urls)
+      urls = urls.flatten
+      raise OwO::Err::NoContent, 'There is a empty string in your arguments!' if urls.include? ''
+      raise OwO::Err::NoContent, 'Theres no URLs provided!' if urls.empty?
+      result = urls.flatten.map { |x| OwO::API.shorten(opts, x) }
+      result[0] if urls.length == 1 || !urls.first.is_a?(Array)
+    end
+
+    private
+
+    def opts
+      { 't' => @token, 'u' => @url, 'a' => @api_url }
     end
   end
+
+  # Alias for the class {WhatsThis}
+  Client = WhatsThis
 end

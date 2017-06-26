@@ -6,13 +6,14 @@ require 'rest-client'
 module OwO
   # List of methods representing endpoints in OwO's API
   module API
-    UPLOAD_URL = 'https://api.awau.moe/upload/pomf'.freeze
-    SHORTEN_URL = 'https://api.awau.moe/shorten/polr'.freeze
+    UPLOAD_URL = '/upload/pomf'.freeze
+    SHORTEN_URL = '/shorten/polr'.freeze
 
     module_function
 
+    # Handles requests given by the client
     def request(type, *attributes)
-      raw = RestClient.send(type, *attributes, :'User-Agent' => "OwO.rb v#{OwO::VERSION} (https://github.com/whats-this/owo.rb)")
+      raw = RestClient.send(type, *attributes, :'User-Agent' => "WhatsThisClient (https://github.com/whats-this/owo.rb, v#{OwO::VERSION})")
       json = parse_json(raw)
       return json
     rescue RestClient::RequestEntityTooLarge
@@ -36,25 +37,29 @@ module OwO
       raise e
     end
 
-    def parse_json(raw)
-      JSON.parse(raw)
-    rescue JSON::ParserError
-      raw
-    end
-
+    # Requests a file(s) to be uploaded
     def upload(opts, files)
       request(
         :post,
-        "#{UPLOAD_URL}?key=#{opts['t']}",
+        "#{opts['a']}#{UPLOAD_URL}?key=#{opts['t']}",
         'files'.to_sym => files
       )
     end
 
+    # Requests a url to be shortened
     def shorten(opts, url)
       request(
         :get,
-        "#{SHORTEN_URL}?action=shorten&url=#{URI.escape(url)}&key=#{opts['t']}"
-      ).sub(/awau\.moe/, opts['s'])
+        "#{opts['a']}#{SHORTEN_URL}?action=shorten&url=#{URI.escape(url)}&key=#{opts['t']}"
+      ).sub(/awau\.moe/, opts['u'])
+    end
+
+    private
+
+    def parse_json(raw)
+      JSON.parse(raw)
+    rescue JSON::ParserError
+      raw
     end
   end
 end
